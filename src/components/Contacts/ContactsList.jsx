@@ -1,32 +1,21 @@
-import PropTypes from 'prop-types';
 import { ContactListItem } from './ContactListItem';
 import css from './Contactlist.module.css';
+import { useSelector } from 'react-redux';
+import { filteredContacts } from 'components/Redux/selectors';
 
-export const ContactsList = ({ contacts }) => {
-  
+export const ContactsList = () => {
+  const contacts = useSelector(filteredContacts);
   return (
     <ul className={css.contacts__box}>
-      {contacts.map(({ id, name, number }) => {
-        return (
-          <ContactListItem
-            key={id}
-            name={name}
-            number={number}
-            id={id}
-          />
-        );
-      })}
+      {contacts.length !== 0 ? (
+        contacts.map(({ id, name, number }) => {
+          return (
+            <ContactListItem key={id} name={name} number={number} id={id} />
+          );
+        })
+      ) : (
+        <p>We don't find this contact</p>
+      )}
     </ul>
   );
-};
-
-ContactsList.propTypes = {
-  contacts: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
-    })
-  ).isRequired,
- 
 };
